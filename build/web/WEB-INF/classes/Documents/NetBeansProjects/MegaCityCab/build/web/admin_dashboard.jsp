@@ -12,6 +12,8 @@
     <!-- Admin Links -->
     <a href="manage_users.jsp">Manage Users</a><br>
     <a href="admin_view_bookings.jsp">View Bookings</a><br>  <!-- New Link to View Bookings -->
+    <a href="manage_drivers_and_cars.jsp">Manage Drivers and Cars</a><br>
+    <a href="assign_driver.jsp">Assign Driver to Booking</a><br>
     <a href="logout.jsp">Logout</a>
 </body>
 </html>

@@ -23,9 +23,12 @@
         <label for="time">Ride Time:</label>
         <input type="time" name="time" required><br><br>
 
-        <button type="submit">Book Ride</button>
-</form>
+        <!-- New input for ride duration in minutes -->
+        <label for="duration">Ride Duration (in minutes):</label>
+        <input type="number" name="duration" required><br><br>
 
+        <button type="submit">Book Ride</button>
+    </form>
 
     <br>
     <a href="dashboard.jsp">Back to Dashboard</a>
