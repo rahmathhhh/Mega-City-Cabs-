@@ -25,7 +25,7 @@
 
         <!-- New input for ride duration in minutes -->
         <label for="duration">Ride Duration (in minutes):</label>
-        <input type="number" name="duration" required><br><br>
+        <input type="number" name="ride_duration" required><br><br>
 
         <button type="submit">Book Ride</button>
     </form>

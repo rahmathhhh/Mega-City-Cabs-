@@ -28,13 +28,26 @@ public class BookRideServlet extends HttpServlet {
         String date = request.getParameter("date");
         String time = request.getParameter("time");
         
-        // Get the duration from the form
-        int duration = Integer.parseInt(request.getParameter("duration"));  // Duration in minutes
+        // Get the ride duration from the form and handle missing or invalid values
+        String rideDurationStr = request.getParameter("ride_duration");
+        int rideDuration = 0;
+        
+        if (rideDurationStr == null || rideDurationStr.isEmpty()) {
+            response.getWriter().println("❌ Ride duration is required.");
+            return;
+        }
+        
+        try {
+            rideDuration = Integer.parseInt(rideDurationStr);  // Duration in minutes
+        } catch (NumberFormatException e) {
+            response.getWriter().println("❌ Invalid ride duration.");
+            return;
+        }
         
         // Fare Calculation
         double baseFare = 50.0;  // Base fare in rupees
         double ratePerMinute = 1.0;  // Rate per minute in rupees
-        double totalFare = baseFare + (duration * ratePerMinute);  // Calculate total fare
+        double totalFare = baseFare + (rideDuration * ratePerMinute);  // Calculate total fare
         
         // Generate a unique Order Number
         String orderNumber = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -42,8 +55,9 @@ public class BookRideServlet extends HttpServlet {
         Connection conn = DatabaseConnection.getConnection();
         if (conn != null) {
             try {
-                // Include status and totalFare in the query
-                String query = "INSERT INTO bookings (user_id, order_number, name, address, phone, destination, ride_date, ride_time, duration, total_fare, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                // Include ride_duration and total_fare in the query
+                String query = "INSERT INTO bookings (user_id, order_number, name, address, phone, destination, ride_date, ride_time, ride_duration, total_fare, status) " +
+                               "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement pstmt = conn.prepareStatement(query);
                 pstmt.setInt(1, userID);
                 pstmt.setString(2, orderNumber);
@@ -53,8 +67,8 @@ public class BookRideServlet extends HttpServlet {
                 pstmt.setString(6, destination);
                 pstmt.setString(7, date);
                 pstmt.setString(8, time);
-                pstmt.setInt(9, duration);  // Duration of the ride in minutes
-                pstmt.setDouble(10, totalFare);  // Total calculated fare
+                pstmt.setInt(9, rideDuration);  // Use ride_duration here
+                pstmt.setDouble(10, totalFare);  // Insert the calculated total fare
                 pstmt.setString(11, "Pending");  // Explicitly set status to 'Pending'
 
                 int rowsInserted = pstmt.executeUpdate();
@@ -69,7 +83,7 @@ public class BookRideServlet extends HttpServlet {
                     request.setAttribute("destination", destination);
                     request.setAttribute("date", date);
                     request.setAttribute("time", time);
-                    request.setAttribute("duration", duration);
+                    request.setAttribute("rideDuration", rideDuration);  // Changed from duration to rideDuration
                     request.setAttribute("totalFare", totalFare);
 
                     request.getRequestDispatcher("view_booking.jsp").forward(request, response);

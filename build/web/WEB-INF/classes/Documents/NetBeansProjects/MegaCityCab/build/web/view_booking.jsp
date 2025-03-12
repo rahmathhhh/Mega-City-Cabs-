@@ -44,6 +44,10 @@
         a:hover {
             text-decoration: underline;
         }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +56,7 @@
     <%
         // Debugging session
         if (session.getAttribute("userID") == null) {
-            out.println("<p>❌ Session expired! Redirecting to login...</p>");
+            out.println("<p class='error'>❌ Session expired! Redirecting to login...</p>");
             response.sendRedirect("login.jsp");
             return;
         }
@@ -74,6 +78,7 @@
                 <th>Assigned Driver</th>
                 <th>Driver Phone</th>
                 <th>Car Type</th>
+                <th>Total Fare</th> <!-- Added column for total fare -->
             </tr>
         </thead>
         <tbody>
@@ -85,11 +90,11 @@
                 try {
                     conn = megacitycabs.db.DatabaseConnection.getConnection();
                     if (conn == null) {
-                        out.println("<p>❌ Database connection failed!</p>");
+                        out.println("<p class='error'>❌ Database connection failed!</p>");
                     } else {
-                        // Updated query to include driver details if assigned
+                        // Updated query to include driver details and total fare
                         String query = "SELECT b.order_number, b.name, b.address, b.phone, b.destination, b.ride_date, b.ride_time, b.status, " +
-                                       "d.name AS driver_name, d.phone AS driver_phone, d.car_type " +
+                                       "d.name AS driver_name, d.phone AS driver_phone, d.car_type, b.total_fare " +  // Added total_fare column
                                        "FROM bookings b " +
                                        "LEFT JOIN drivers d ON b.driver_id = d.id " +
                                        "WHERE b.user_id = ? " +
@@ -103,6 +108,7 @@
                             String driverName = rs.getString("driver_name");
                             String driverPhone = rs.getString("driver_phone");
                             String carType = rs.getString("car_type");
+                            double totalFare = rs.getDouble("total_fare");
 
                             // If no driver assigned yet, show "Not Assigned"
                             if (driverName == null) {
@@ -123,12 +129,13 @@
                 <td><%= driverName %></td>
                 <td><%= driverPhone %></td>
                 <td><%= carType %></td>
+                <td>₹<%= String.format("%.2f", totalFare) %></td> <!-- Display total fare formatted to two decimal places -->
             </tr>
             <%
                         }
                     }
                 } catch (SQLException e) {
-                    out.println("<p>❌ Error fetching bookings. Please try again later.</p>");
+                    out.println("<p class='error'>❌ Error fetching bookings. Please try again later.</p>");
                 } finally {
                     // Ensure all resources are closed
                     try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }

@@ -8,6 +8,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin View Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h2>Admin - View All Bookings</h2>
@@ -23,6 +68,7 @@
             <th>Ride Time</th>
             <th>Status</th>
             <th>Driver</th>
+            <th>Total Fare</th> <!-- Added Total Fare Column -->
             <th>Actions</th>
         </tr>
 
@@ -44,6 +90,7 @@
                         String rideTime = rs.getString("ride_time");
                         String status = rs.getString("status");
                         String assignedDriver = rs.getString("driver_id"); // Fetch assigned driver
+                        double totalFare = rs.getDouble("total_fare"); // Fetch total fare from database
         %>
 
         <tr>
@@ -56,6 +103,7 @@
             <td><%= rideTime %></td>
             <td><%= status %></td>
 
+            <!-- Driver Assignment Section -->
             <td>
                 <form action="assign_driver.jsp" method="post">
                     <input type="hidden" name="orderNumber" value="<%= orderNumber %>">
@@ -82,6 +130,10 @@
                 </form>
             </td>
 
+            <!-- Total Fare -->
+            <td>₹<%= totalFare %></td> <!-- Display total fare -->
+
+            <!-- Accept/Reject Actions -->
             <td>
                 <form action="admin_view_bookings.jsp" method="post" style="display:inline;">
                     <input type="hidden" name="orderNumber" value="<%= orderNumber %>">
@@ -93,8 +145,8 @@
                     <input type="submit" name="action" value="Reject" style="background-color: red; color: white;">
                 </form>
             </td>
-        </tr>
 
+        </tr>
         <%
                     }
                     rs.close();

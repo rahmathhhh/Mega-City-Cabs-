@@ -15,8 +15,7 @@
 </a>
 
     <a href="view_booking.jsp">
-    <button>View My Bookings</button>
-</a>
+    <button>View My Bookings & Bills</button>
 
     <a href="logout.jsp">Logout</a>
 </body>
