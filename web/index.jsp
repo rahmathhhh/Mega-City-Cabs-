@@ -11,43 +11,48 @@
 
     <style>
         /* General Page Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
+        body, h1, h2, p {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(to right, #007bff, #00d4ff);
-            color: white;
-            text-align: center;
-            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* Container Box */
+        /* Page layout */
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container for the home page */
         .container {
-            background: rgba(255, 255, 255, 0.15);
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 40px;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 1s ease-in-out, transform 0.8s ease-in-out;
+            width: 350px;
+            text-align: center;
+            border: 2px solid #007bff; /* Blue border */
         }
 
-        /* Title */
         h1 {
+            color: #007bff; /* Blue title */
             font-size: 40px;
-            font-weight: 600;
             margin-bottom: 10px;
-            text-transform: uppercase;
         }
 
-        /* Subtext */
+        h2 {
+            color: #007bff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
         p {
-            font-size: 18px;
+            color: #777;
             margin-bottom: 20px;
         }
 
@@ -58,7 +63,7 @@
             padding: 12px 24px;
             font-size: 18px;
             color: white;
-            background: #ffcc00;
+            background: #007bff; /* Blue button */
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
@@ -66,36 +71,49 @@
         }
 
         .btn:hover {
-            background: #ffdd44;
-            transform: scale(1.05);
+            background: #0056b3; /* Darker blue on hover */
         }
 
-        /* Fade-in Effect */
-        .fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        /* Logout link styling */
+        .logout {
+            background-color: #ff4d4d; /* Red background for logout */
+            color: white;
+        }
+
+        .logout:hover {
+            background-color: #e60000;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                width: 80%;
+            }
+
+            h1 {
+                font-size: 35px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .btn {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="welcomeBox">
+    <div class="container">
         <h1>Mega City Cabs</h1>
-        <h2 id="greeting">🚖 Welcome to Your Trusted Ride Service</h2>
+        <h2>🚖 Welcome to Your Trusted Ride Service</h2>
         <p>Your reliable ride, anytime, anywhere.</p>
         <a href="login.jsp" class="btn">Login</a>
         <a href="register.jsp" class="btn">Register</a>
     </div>
-
-    <script>
-        // Add fade-in effect on load
-        window.onload = function () {
-            document.getElementById("welcomeBox").classList.add("fade-in");
-            updateGreeting();
-        };
-
-        
-    </script>
 
 </body>
 </html>
